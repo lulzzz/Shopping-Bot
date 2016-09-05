@@ -205,8 +205,6 @@ namespace ShopperBot.Dialogs
             message.Text = messageBody.ToString();
             await context.PostAsync(message);
             context.Wait(MessageReceived);
-
-            await AnthingElse(context);
         }
 
         [LuisIntent("FinishOrder")]
@@ -217,7 +215,11 @@ namespace ShopperBot.Dialogs
             message.TextFormat = "markdown";
             message.Attachments = new List<Attachment>();
             var messageBody = new StringBuilder();
-            messageBody.AppendLine("OK, thanks, we'll email you an order receipt and you can change the order anytime up to 23:59 the day before (Monday 12th September). Just ask me to change the order if you want to add anything, otherwise our driver **Karl** will be with you at **10:30** on **Tuesday 13th September**, I hope you enjoy those new beers.");
+            messageBody.AppendLine("OK, thanks, we'll email you an order receipt but [here is a web link for your reference](https://www.ocado.com/webshop/displayAllOrders.do?)");
+            messageBody.AppendLine(" ");
+            messageBody.AppendLine("You can change the order anytime up to 23:59 the day before (Monday 12th September). Just ask me to change the order if you want to add anything");
+            messageBody.AppendLine(" ");
+            messageBody.AppendLine("Otherwise our driver **Karl** will be with you at **10:30** on **Tuesday 13th September**, I hope you enjoy those new beers.");
             message.Text = messageBody.ToString();
             await context.PostAsync(message);
             context.Wait(MessageReceived);
