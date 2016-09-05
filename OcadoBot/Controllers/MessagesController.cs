@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
+using OcadoBot.Dialogs;
 
 namespace OcadoBot
 {
@@ -21,13 +22,8 @@ namespace OcadoBot
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                // calculate something for us to return
-                int length = (activity.Text ?? string.Empty).Length;
-
-                // return our reply to the user
-                Activity reply = activity.CreateReply($"You sent {activity.Text} which was {length} characters");
-                await connector.Conversations.ReplyToActivityAsync(reply);
+                //Invoke LUID dialog
+                await Microsoft.Bot.Builder.Dialogs.Conversation.SendAsync(activity, () => new ShopperLUISDialog());
             }
             else
             {
