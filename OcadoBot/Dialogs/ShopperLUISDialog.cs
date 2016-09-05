@@ -239,6 +239,14 @@ namespace ShopperBot.Dialogs
             context.Wait(MessageReceived);
         }
 
+        [LuisIntent("Logout")]
+        public async Task Logout(IDialogContext context, LuisResult result)
+        {
+            context.PrivateConversationData.Clear();
+            await context.PostAsync("...");
+            context.Wait(MessageReceived);
+        }
+
         public async Task AnthingElse(IDialogContext context)
         {
             //fake a delay
