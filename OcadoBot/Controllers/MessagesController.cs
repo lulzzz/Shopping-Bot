@@ -7,9 +7,9 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
-using OcadoBot.Dialogs;
+using ShopperBot.Dialogs;
 
-namespace OcadoBot
+namespace ShopperBot
 {
     [BotAuthentication]
     public class MessagesController : ApiController

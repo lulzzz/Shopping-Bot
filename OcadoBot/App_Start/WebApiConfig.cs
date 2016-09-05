@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace OcadoBot
+namespace ShopperBot
 {
     public static class WebApiConfig
     {

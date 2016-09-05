@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace OcadoBot.Dialogs
+namespace ShopperBot.Dialogs
 {
     [LuisModel("fa0ef930-1b59-4c42-98f2-8f68ad83246c", "d004b0b064694dd1bec537e3629863fb")]
     [Serializable]

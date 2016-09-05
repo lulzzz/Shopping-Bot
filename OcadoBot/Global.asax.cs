@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 
-namespace OcadoBot
+namespace ShopperBot
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
