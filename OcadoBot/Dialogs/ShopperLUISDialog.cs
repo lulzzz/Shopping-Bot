@@ -77,19 +77,40 @@ namespace ShopperBot.Dialogs
         [LuisIntent("BookDeliverySlot")]
         public async Task BookDeliverySlot(IDialogContext context, LuisResult result)
         {
+            //Initial message
             var message = context.MakeMessage();
             message.Type = "message";
             message.TextFormat = "markdown";
-            message.Attachments = new List<Attachment>();
-
             var messageBody = new StringBuilder();
-            messageBody.AppendLine("Sure, I can book a delivery slot for you. I know you normally prefer Mondays, I have these slots available next **Monday 12th September**:");
-            messageBody.AppendLine("* 9:00 ");
-            messageBody.AppendLine("* 11:45 ");
-            messageBody.AppendLine("* 13:00 ");
+            messageBody.AppendLine("Sure, I can book a delivery slot for you. I know you normally prefer Mondays, I have these slots available next Monday 12th September:");
             message.Text = messageBody.ToString();
-
             await context.PostAsync(message);
+
+            //fake a delay
+            Delay(context, 1, true);
+
+            //hero with buttons
+            var messageButtons = (Activity)context.MakeMessage();
+            messageButtons.Recipient = messageButtons.From;
+            messageButtons.Type = "message";
+            messageButtons.Attachments = new List<Attachment>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            cardButtons.Add(new CardAction(){Value = "9:00",Type = "imBack",Title = "9:00"});
+            cardButtons.Add(new CardAction() { Value = "11:45", Type = "imBack", Title = "11:45" });
+            cardButtons.Add(new CardAction() { Value = "13:00", Type = "imBack", Title = "13:00" });
+            List<CardImage> cardImages = new List<CardImage>();
+            cardImages.Add(new CardImage(url: "http://static.guim.co.uk/sys-images/Guardian/Pix/cartoons/2010/6/7/1275929867641/ocado-van-006.jpg"));
+            HeroCard plCard = new HeroCard()
+            {
+                Title = "Available delivery slots for Monday 12th",
+                Subtitle = "Please choose a slot",
+                Images = cardImages,
+                Buttons = cardButtons
+            };
+            messageButtons.Attachments.Add(plCard.ToAttachment());
+            await context.PostAsync(messageButtons);
+
+            //wait for user
             context.Wait(MessageReceived);
         }
 
@@ -118,39 +139,86 @@ namespace ShopperBot.Dialogs
             //fake a delay
             Delay(context, 2, true);
 
+            //initial message
             var message = context.MakeMessage();
             message.Type = "message";
             message.TextFormat = "markdown";
             message.Attachments = new List<Attachment>();
-
             var messageBody = new StringBuilder();
-            messageBody.AppendLine("Sure, I have these slots available next **Tuesday 13th September**:");
-            messageBody.AppendLine("* 9:00 ");
-            messageBody.AppendLine("* 10:30 ");
-            messageBody.AppendLine("* 12:00 ");
+            messageBody.AppendLine("Sure, I have these slots available next Tuesday 13th September:");
             message.Text = messageBody.ToString();
-
             await context.PostAsync(message);
+
+            //hero with buttons
+            var messageButtons = (Activity)context.MakeMessage();
+            messageButtons.Recipient = messageButtons.From;
+            messageButtons.Type = "message";
+            messageButtons.Attachments = new List<Attachment>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            cardButtons.Add(new CardAction() { Value = "9:00", Type = "imBack", Title = "9:00" });
+            cardButtons.Add(new CardAction() { Value = "10:30", Type = "imBack", Title = "10:30" });
+            cardButtons.Add(new CardAction() { Value = "12:00", Type = "imBack", Title = "12:00" });
+            List<CardImage> cardImages = new List<CardImage>();
+            cardImages.Add(new CardImage(url: "http://static.guim.co.uk/sys-images/Guardian/Pix/cartoons/2010/6/7/1275929867641/ocado-van-006.jpg"));
+            HeroCard plCard = new HeroCard()
+            {
+                Title = "Available delivery slots for Tuesday 13th",
+                Subtitle = "Please choose a slot",
+                Images = cardImages,
+                Buttons = cardButtons
+            };
+            messageButtons.Attachments.Add(plCard.ToAttachment());
+            await context.PostAsync(messageButtons);
+
+            //wait for user
             context.Wait(MessageReceived);
         }
 
         [LuisIntent("Book1030")]
         public async Task Book1030(IDialogContext context, LuisResult result)
         {
+            //initial message
             var message = context.MakeMessage();
             message.Type = "message";
             message.TextFormat = "markdown";
             message.Attachments = new List<Attachment>();
             var messageBody = new StringBuilder();
-            messageBody.AppendLine("Thanks, I've booked a delivery for **10:30** on **Tuesday 13th September** for you");
-            messageBody.AppendLine(" ");
-            messageBody.AppendLine("We're ready to make an order, here are your saved shopping lists, which one would you like to use?");
-            messageBody.AppendLine("* Weekly Shop ");
-            messageBody.AppendLine("* Big Shop ");
-            messageBody.AppendLine("* Fresh top-up Shop ");
-            messageBody.AppendLine("* Weekend drinks and nibbles ");
+            messageBody.AppendLine("Thanks, I've booked a delivery for 10:30 on Tuesday 13th September for you");
             message.Text = messageBody.ToString();
             await context.PostAsync(message);
+
+            //were ready message
+            var messageReady = context.MakeMessage();
+            messageReady.Type = "message";
+            messageReady.TextFormat = "markdown";
+            messageReady.Attachments = new List<Attachment>();
+            var messageReadyBody = new StringBuilder();
+            messageReadyBody.AppendLine("We're ready to make an order, here are your saved shopping lists, which one would you like to use?");
+            messageReady.Text = messageReadyBody.ToString();
+            await context.PostAsync(messageReady);
+
+            //hero with buttons
+            var messageButtons = (Activity)context.MakeMessage();
+            messageButtons.Recipient = messageButtons.From;
+            messageButtons.Type = "message";
+            messageButtons.Attachments = new List<Attachment>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            cardButtons.Add(new CardAction() { Value = "Weekly Shop", Type = "imBack", Title = "Weekly Shop" });
+            cardButtons.Add(new CardAction() { Value = "Big Shop", Type = "imBack", Title = "Big Shop" });
+            cardButtons.Add(new CardAction() { Value = "Weekend drinks and nibbles", Type = "imBack", Title = "Weekend drinks and nibbles" });
+            List<CardImage> cardImages = new List<CardImage>();
+            cardImages.Add(new CardImage(url: "http://lapalmemagazine.com/wp-content/uploads/2014/11/lots-of-groceries.jpg"));
+            HeroCard plCard = new HeroCard()
+            {
+                Title = "Your stored shopping lists",
+                Subtitle = "Please choose a list",
+                Images = cardImages,
+                Buttons = cardButtons
+            };
+            messageButtons.Attachments.Add(plCard.ToAttachment());
+            await context.PostAsync(messageButtons);
+
+            //wait for user
             context.Wait(MessageReceived);
         }
 
@@ -183,7 +251,7 @@ namespace ShopperBot.Dialogs
             message.TextFormat = "markdown";
             message.Attachments = new List<Attachment>();
             var messageBody = new StringBuilder();
-            messageBody.AppendLine("Sure, I'll use the **Weekend Drinks and Nibbles** list. Are you interested in any additional recommended products?");
+            messageBody.AppendLine("Sure, I'll use the Weekend Drinks and Nibbles list. Are you interested in any additional recommended products?");
             message.Text = messageBody.ToString();
             await context.PostAsync(message);
             context.Wait(MessageReceived);
@@ -197,7 +265,7 @@ namespace ShopperBot.Dialogs
             message.TextFormat = "markdown";
             message.Attachments = new List<Attachment>();
             var messageBody = new StringBuilder();
-            messageBody.AppendLine("OK, we have an 'Any 3 for £5' offer on offer for bottled beers at the moment. You have 4 items that qualify already in your **Weekend Drinks and Nibbles** list, can I recommend any two of the following to complete the offer?");
+            messageBody.AppendLine("OK, we have an 'Any 3 for £5' offer on offer for bottled beers at the moment. You have 4 items that qualify already in your Weekend Drinks and Nibbles list, can I recommend any two of the following to complete the offer?");
             messageBody.AppendLine(" * London Pride £1.79 ");
             messageBody.AppendLine(" * Doom Bar Bitter £1.79 ");
             messageBody.AppendLine(" * Einstok Pale Ale £1.99 ");
@@ -215,7 +283,7 @@ namespace ShopperBot.Dialogs
             message.TextFormat = "markdown";
             message.Attachments = new List<Attachment>();
             var messageBody = new StringBuilder();
-            messageBody.AppendLine("OK, I'll add **London Pride £1.79** please choose one more to complete the offer?");
+            messageBody.AppendLine("OK, I'll add London Pride £1.79 please choose one more to complete the offer?");
             messageBody.AppendLine(" * Doom Bar Bitter £1.79 ");
             messageBody.AppendLine(" * Einstok Pale Ale £1.99 ");
             messageBody.AppendLine(" * Sierra Nevada Pale Ale £1.79 ");
@@ -251,10 +319,21 @@ namespace ShopperBot.Dialogs
             messageBody.AppendLine("OK, thanks, we'll email you an order receipt but [here is a web link for your reference](https://www.ocado.com/webshop/displayAllOrders.do?)");
             messageBody.AppendLine(" ");
             messageBody.AppendLine("You can change the order anytime up to 23:59 the day before (Monday 12th September). Just ask me to change the order if you want to add anything");
-            messageBody.AppendLine(" ");
-            messageBody.AppendLine("Otherwise our driver **Karl** will be with you at **10:30** on **Tuesday 13th September**, I hope you enjoy those new beers.");
             message.Text = messageBody.ToString();
             await context.PostAsync(message);
+
+            //fake a delay
+            Delay(context, 1, true);
+
+            var message2 = context.MakeMessage();
+            message2.Type = "message";
+            message2.TextFormat = "markdown";
+            message2.Attachments = new List<Attachment>();
+            var message2Body = new StringBuilder();
+            message2Body.AppendLine("Our driver Karl will be with you at 10:30 on Tuesday 13th September, I hope you enjoy those new beers.");
+            message2.Text = message2Body.ToString();
+            await context.PostAsync(message2);
+
             context.Wait(MessageReceived);
         }
 
