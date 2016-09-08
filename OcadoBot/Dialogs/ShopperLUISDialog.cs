@@ -36,7 +36,7 @@ namespace ShopperBot.Dialogs
         [LuisIntent("Greeting")]
         public async Task Greeting(IDialogContext context, LuisResult result)
         {
-            string message = $"Hi {_originActivity.From.Name}. I'm the Ocado bot, how can I help you today?";
+            string message = $"Hi {_originActivity.From.Name}. I'm Octo, the Ocado bot, how can I help you today?";
             await context.PostAsync(message);
             context.Wait(MessageReceived);
         }
@@ -44,20 +44,34 @@ namespace ShopperBot.Dialogs
         [LuisIntent("Help")]
         public async Task Help(IDialogContext context, LuisResult result)
         {
-            var message = context.MakeMessage();
-            message.Type = "message";
-            message.TextFormat = "markdown";
-            var messageBody = new StringBuilder();
-            messageBody.AppendLine("You can ask me things like");
-            messageBody.AppendLine("* Book a delivery ");
-            messageBody.AppendLine("* Show me recommendations ");
-            messageBody.AppendLine("* See my lists ");
-            messageBody.AppendLine("* Check an order ");
-            messageBody.AppendLine("* Change an order ");
-            message.Text = messageBody.ToString();
+            try
+            {
+                var message = (Activity)context.MakeMessage();
+                message.Type = "message";
+                message.TextFormat = "markdown";
+                var messageBody = new StringBuilder();
+                messageBody.AppendLine("You can ask me things like");
+                messageBody.AppendLine("* Book a delivery ");
+                messageBody.AppendLine("* Show me recommendations ");
+                messageBody.AppendLine("* See my lists ");
+                messageBody.AppendLine("* Check an order ");
+                messageBody.AppendLine("* Change an order ");
+                message.Text = messageBody.ToString();
 
-            await context.PostAsync(message);
-            context.Wait(MessageReceived);
+                await context.PostAsync(message);
+                context.Wait(MessageReceived);
+            }
+            catch (Exception ex)
+            {
+                var message = context.MakeMessage();
+                message.Type = "message";
+                message.TextFormat = "markdown";
+                var messageBody = new StringBuilder();
+                messageBody.AppendLine(ex.Message);
+                message.Text = messageBody.ToString();
+                await context.PostAsync(message);
+                context.Wait(MessageReceived);
+            }
         }
 
         [LuisIntent("BookDeliverySlot")]
@@ -73,6 +87,25 @@ namespace ShopperBot.Dialogs
             messageBody.AppendLine("* 9:00 ");
             messageBody.AppendLine("* 11:45 ");
             messageBody.AppendLine("* 13:00 ");
+            message.Text = messageBody.ToString();
+
+            await context.PostAsync(message);
+            context.Wait(MessageReceived);
+        }
+
+        [LuisIntent("NotHappy")]
+        public async Task NotHappy(IDialogContext context, LuisResult result)
+        {
+            //fake a delay
+            Delay(context, 1, true);
+
+            var message = context.MakeMessage();
+            message.Type = "message";
+            message.TextFormat = "markdown";
+            message.Attachments = new List<Attachment>();
+
+            var messageBody = new StringBuilder();
+            messageBody.AppendLine("Oh you don't seem happy about that suggestion. Would any other days work for you?");
             message.Text = messageBody.ToString();
 
             await context.PostAsync(message);
