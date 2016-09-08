@@ -228,18 +228,26 @@ namespace ShopperBot.Dialogs
             //fake a delay
             Delay(context, 2, true);
 
-            var message = context.MakeMessage();
-            message.Type = "message";
-            message.TextFormat = "markdown";
-            message.Attachments = new List<Attachment>();
-            var messageBody = new StringBuilder();
-            messageBody.AppendLine("Here are your saved shopping lists, which one would you like to use?");
-            messageBody.AppendLine("* Weekly Shop ");
-            messageBody.AppendLine("* Big Shop ");
-            messageBody.AppendLine("* Fresh top-up Shop ");
-            messageBody.AppendLine("* Weekend drinks and nibbles ");
-            message.Text = messageBody.ToString();
-            await context.PostAsync(message);
+            //hero with buttons
+            var messageButtons = (Activity)context.MakeMessage();
+            messageButtons.Recipient = messageButtons.From;
+            messageButtons.Type = "message";
+            messageButtons.Attachments = new List<Attachment>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            cardButtons.Add(new CardAction() { Value = "Weekly Shop", Type = "imBack", Title = "Weekly Shop" });
+            cardButtons.Add(new CardAction() { Value = "Big Shop", Type = "imBack", Title = "Big Shop" });
+            cardButtons.Add(new CardAction() { Value = "Weekend drinks and nibbles", Type = "imBack", Title = "Weekend drinks and nibbles" });
+            HeroCard plCard = new HeroCard()
+            {
+                Title = "Your stored shopping lists",
+                Subtitle = "Please choose a list",
+                Images = null,
+                Buttons = cardButtons
+            };
+            messageButtons.Attachments.Add(plCard.ToAttachment());
+            await context.PostAsync(messageButtons);
+
+            //wait for user
             context.Wait(MessageReceived);
         }
 
@@ -266,12 +274,29 @@ namespace ShopperBot.Dialogs
             message.Attachments = new List<Attachment>();
             var messageBody = new StringBuilder();
             messageBody.AppendLine("OK, we have an 'Any 3 for £5' offer on offer for bottled beers at the moment. You have 4 items that qualify already in your Weekend Drinks and Nibbles list, can I recommend any two of the following to complete the offer?");
-            messageBody.AppendLine(" * London Pride £1.79 ");
-            messageBody.AppendLine(" * Doom Bar Bitter £1.79 ");
-            messageBody.AppendLine(" * Einstok Pale Ale £1.99 ");
-            messageBody.AppendLine(" * Sierra Nevada Pale Ale £1.79 ");
             message.Text = messageBody.ToString();
             await context.PostAsync(message);
+
+            //hero with buttons
+            var messageButtons = (Activity)context.MakeMessage();
+            messageButtons.Recipient = messageButtons.From;
+            messageButtons.Type = "message";
+            messageButtons.Attachments = new List<Attachment>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            cardButtons.Add(new CardAction() { Value = "London Pride £1.79", Type = "imBack", Title = "London Pride £1.79" });
+            cardButtons.Add(new CardAction() { Value = "Doom Bar Bitter £1.79", Type = "imBack", Title = "Doom Bar Bitter £1.79" });
+            cardButtons.Add(new CardAction() { Value = "Sierra Nevada Pale Ale £1.79", Type = "imBack", Title = "Sierra Nevada Pale Ale £1.79" });
+            HeroCard plCard = new HeroCard()
+            {
+                Title = "Some suggestions",
+                Subtitle = "Optionally choose one of these suggestions",
+                Images = null,
+                Buttons = cardButtons
+            };
+            messageButtons.Attachments.Add(plCard.ToAttachment());
+            await context.PostAsync(messageButtons);
+
+            //wait for user
             context.Wait(MessageReceived);
         }
 
@@ -284,11 +309,30 @@ namespace ShopperBot.Dialogs
             message.Attachments = new List<Attachment>();
             var messageBody = new StringBuilder();
             messageBody.AppendLine("OK, I'll add London Pride £1.79 please choose one more to complete the offer?");
-            messageBody.AppendLine(" * Doom Bar Bitter £1.79 ");
-            messageBody.AppendLine(" * Einstok Pale Ale £1.99 ");
-            messageBody.AppendLine(" * Sierra Nevada Pale Ale £1.79 ");
             message.Text = messageBody.ToString();
             await context.PostAsync(message);
+
+
+            //hero with buttons
+            var messageButtons = (Activity)context.MakeMessage();
+            messageButtons.Recipient = messageButtons.From;
+            messageButtons.Type = "message";
+            messageButtons.Attachments = new List<Attachment>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            cardButtons.Add(new CardAction() { Value = "Purity Gold £1.99", Type = "imBack", Title = "Purity Gold £1.99" });
+            cardButtons.Add(new CardAction() { Value = "Doom Bar Bitter £1.79", Type = "imBack", Title = "Doom Bar Bitter £1.79" });
+            cardButtons.Add(new CardAction() { Value = "Sierra Nevada Pale Ale £1.79", Type = "imBack", Title = "Sierra Nevada Pale Ale £1.79" });
+            HeroCard plCard = new HeroCard()
+            {
+                Title = "Some suggestions",
+                Subtitle = "Optionally choose one of these suggestions",
+                Images = null,
+                Buttons = cardButtons
+            };
+            messageButtons.Attachments.Add(plCard.ToAttachment());
+            await context.PostAsync(messageButtons);
+
+            //wait for user
             context.Wait(MessageReceived);
         }
 
@@ -345,7 +389,7 @@ namespace ShopperBot.Dialogs
             message.TextFormat = "markdown";
             message.Attachments = new List<Attachment>();
             var messageBody = new StringBuilder();
-            messageBody.AppendLine("Goodbye, have a lovely day.");
+            messageBody.AppendLine("Goodbye, have a lovely day. :)");
             message.Text = messageBody.ToString();
             await context.PostAsync(message);
             context.Wait(MessageReceived);
