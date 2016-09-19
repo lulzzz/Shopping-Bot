@@ -395,6 +395,50 @@ namespace ShopperBot.Dialogs
             context.Wait(MessageReceived);
         }
 
+        [LuisIntent("Clear")]
+        public async Task Clear(IDialogContext context, LuisResult result)
+        {
+            var message = context.MakeMessage();
+            message.Type = "message";
+            message.TextFormat = "markdown";
+            message.Attachments = new List<Attachment>();
+            var messageBody = new StringBuilder();
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            messageBody.AppendLine("");
+            message.Text = messageBody.ToString();
+            await context.PostAsync(message);
+            context.Wait(MessageReceived);
+        }
+
         [LuisIntent("Logout")]
         public async Task Logout(IDialogContext context, LuisResult result)
         {
